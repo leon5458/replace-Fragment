@@ -1,32 +1,28 @@
-package com.hly.fragment.showandhide;
+package com.hly.fragment;
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-
-import android.widget.Toast;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.hly.fragment.R;
 import com.hly.fragment.viewpager.FilmFragment;
 import com.hly.fragment.viewpager.HpFragment;
 import com.hly.fragment.viewpager.MeFragment;
 
-public class ShowActvity extends AppCompatActivity implements View.OnClickListener,
-        MeFragment.testDataCallback {
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+
+public class ObjectActivity extends AppCompatActivity implements View.OnClickListener{
+
     private HpFragment hpFragment;
     private FilmFragment filmFragment;
     private MeFragment meFragment;
     private TextView hpText;
     private TextView filmText;
     private TextView meText;
-
+    // 注意fragment 的生命周期变化 重新走了
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_activity_layout);
         hpText = findViewById(R.id.hp_text);
@@ -41,7 +37,7 @@ public class ShowActvity extends AppCompatActivity implements View.OnClickListen
 
     private void initTab(int i) {
         //开启事务，fragment的控制是由事务来实现的
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        androidx.fragment.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragments(transaction);
         clearSelection();
         switch (i) {
@@ -49,10 +45,9 @@ public class ShowActvity extends AppCompatActivity implements View.OnClickListen
                 hpText.setTextColor(Color.RED);
                 if (hpFragment == null) {
                     hpFragment = new HpFragment();
-                    hpFragment.setonIntentDataCallback(intentDataCallback);
                     transaction.add(R.id.content, hpFragment);
                 } else {
-                    transaction.show(hpFragment);
+                    transaction.attach(hpFragment);
                 }
                 break;
             case 1:
@@ -61,7 +56,7 @@ public class ShowActvity extends AppCompatActivity implements View.OnClickListen
                     filmFragment = new FilmFragment();
                     transaction.add(R.id.content, filmFragment);
                 } else {
-                    transaction.show(filmFragment);
+                    transaction.attach(filmFragment);
                 }
                 break;
             case 2:
@@ -70,7 +65,7 @@ public class ShowActvity extends AppCompatActivity implements View.OnClickListen
                     meFragment = new MeFragment();
                     transaction.add(R.id.content, meFragment);
                 } else {
-                    transaction.show(meFragment);
+                    transaction.attach(meFragment);
                 }
                 break;
         }
@@ -86,14 +81,14 @@ public class ShowActvity extends AppCompatActivity implements View.OnClickListen
 
     private void hideFragments(FragmentTransaction transaction) {
         if (filmFragment != null) {
-            transaction.hide(filmFragment);
+            transaction.detach(filmFragment);
         }
         if (hpFragment != null) {
-            transaction.hide(hpFragment);
+            transaction.detach(hpFragment);
         }
 
         if (meFragment != null) {
-            transaction.hide(meFragment);
+            transaction.detach(meFragment);
         }
     }
 
@@ -113,21 +108,4 @@ public class ShowActvity extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    private onIntentDataCallback intentDataCallback = new onIntentDataCallback() {
-        @Override
-        public void onIntentData() {
-            Log.e("********", "要传递的数据");
-            Toast.makeText(ShowActvity.this, "这个Toast代表一个方法吧", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    @Override
-    public void testData() {
-        Log.e("********", "要传递的数据");
-        Toast.makeText(ShowActvity.this, "这个Toast代表一个方法吧", Toast.LENGTH_SHORT).show();
-    }
-
-    public interface onIntentDataCallback {
-        void onIntentData();
-    }
 }

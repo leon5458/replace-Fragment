@@ -12,10 +12,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.hly.fragment.R;
+import com.hly.fragment.showandhide.ShowActvity;
 
-public class HpFragment extends Fragment {
+public class HpFragment extends BaseFragment {
 
-    public static String TAG = "-----HpFragment";
+    private static String TAG = "-----HpFragment";
+
+    private ShowActvity.onIntentDataCallback intentDataCallback;
+
+    public void setonIntentDataCallback(ShowActvity.onIntentDataCallback intentDataCallback) {
+        this.intentDataCallback = intentDataCallback;
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -29,10 +36,18 @@ public class HpFragment extends Fragment {
         Log.e(TAG, "onCreate");
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_connectdevice_layout, container, false);
-        Log.e(TAG, "onCreateView");
-        return view;
+
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.fragment_connectdevice_layout;
+    }
+
+    @Override
+    protected void setUpView() {
+        if (intentDataCallback != null) {
+            intentDataCallback.onIntentData();
+        }
     }
 
     @Override

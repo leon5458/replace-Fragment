@@ -12,10 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.hly.fragment.R;
+import com.hly.fragment.showandhide.ShowActvity;
 
-public class FilmFragment extends Fragment {
+public class FilmFragment extends BaseFragment {
 
-    public static  String TAG="-----FilmFragment";
+    private static String TAG = "-----FilmFragment";
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -28,11 +30,17 @@ public class FilmFragment extends Fragment {
         Log.e(TAG, "onCreate");
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_oversee_layout, container, false);
-        Log.e(TAG, "onCreateView");
-        return view;
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.fragment_oversee_layout;
     }
+
+    @Override
+    protected void setUpView() {
+
+    }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -70,14 +78,11 @@ public class FilmFragment extends Fragment {
         Log.e(TAG, "onDestroyView");
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.e(TAG, "onDestroy");
     }
-
-
 
     @Override
     public void onDetach() {

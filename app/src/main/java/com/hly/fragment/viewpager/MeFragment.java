@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.hly.fragment.R;
 
-public class MeFragment extends Fragment {
+public class MeFragment extends BaseFragment {
     public static  String TAG="-----MeFragment";
     @Override
     public void onAttach(@NonNull Context context) {
@@ -27,10 +27,21 @@ public class MeFragment extends Fragment {
         Log.e(TAG, "onCreate");
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.me_fragment_layout, container, false);
-        Log.e(TAG, "onCreateView");
-        return view;
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.me_fragment_layout;
+    }
+
+    @Override
+    protected void setUpView() {
+        if (getActivity() instanceof testDataCallback) {
+            ((testDataCallback) getActivity()).testData();
+        }
+    }
+
+    public interface testDataCallback {
+        void testData();
     }
 
     @Override
